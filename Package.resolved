@@ -41,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/0xOpenBytes/o",
       "state" : {
-        "revision" : "3e83362434c82f318a8d72e0d3b0786ffb3ba640",
-        "version" : "2.1.0"
+        "revision" : "2c8dc280528428f684f250f88dbc513f4c65504e",
+        "version" : "2.1.1"
       }
     },
     {

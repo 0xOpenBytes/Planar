@@ -1,10 +1,10 @@
 import Plugin
 import SpriteKit
 
-#if os(iOS)
-public typealias PlanarColor = UIColor
-#else
+#if os(macOS)
 public typealias PlanarColor = NSColor
+#else
+public typealias PlanarColor = UIColor
 #endif
 
 /// A protocol that defines methods for creating various types of `PlanarNode`s.
