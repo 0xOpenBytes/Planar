@@ -4,6 +4,7 @@ import Scribe
 import SpriteKit
 import TaskManager
 
+/// A custom `SKScene` that provides additional functionality for building 2D games and simulations in Swift using SpriteKit.
 open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     /// Represents a key for a task to be executed by the `TaskManager`.
     public enum TaskKey: Hashable {
