@@ -50,7 +50,7 @@ struct PositionPlugin: Plugin {
 }
 
 let playerNode = PlanarNode(node: SKSpriteNode(imageNamed: "player"))
-let positionPlugin = PositionPlugin(keyPath: \.position)
+playerNode.register(plugin: PositionPlugin(keyPath: \.position))
 
 try await playerNode.handle(value: CGPoint(x: 100, y: 100))
 
