@@ -147,7 +147,7 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
             return node
         }
 
-        guard let node = childNode(withName: "\(key)") else {
+        guard let node = children.first(where: { $0.name == "\(key)" }) else {
             return nil
         }
 
