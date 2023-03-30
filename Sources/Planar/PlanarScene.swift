@@ -94,6 +94,8 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func add(node: PlanarNode, forKey key: NodeKey) {
         nodes.set(value: node, forKey: key)
 
+        node.name = "\(key)"
+
         addChild(node)
     }
 
@@ -145,7 +147,7 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
             return node
         }
 
-        guard let node = childNode(withName: "\(key.hashValue)") else {
+        guard let node = childNode(withName: "\(key)") else {
             return nil
         }
 
