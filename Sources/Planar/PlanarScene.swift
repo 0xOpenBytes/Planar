@@ -184,30 +184,6 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
         try nodes.resolve(key)
     }
 
-    /// Resolves a PlanarNode from the scene with a given key.
-    ///
-    /// - Parameter key: The key associated with the node.
-    ///
-    /// - Returns: The resolved PlanarNode with the given key.
-    ///
-    /// - Throws: An error if the node cannot be resolved.
-    open func childNode(
-        _ key: NodeKey
-    ) throws -> PlanarNode {
-        if let node = get(key) {
-            return node
-        }
-
-        guard let node = childNode(withName: "\(key.hashValue)") else {
-            throw c.MissingRequiredKeysError(keys: Set([key]))
-        }
-
-        let planarNode = PlanarNode(node: node)
-        nodes.set(value: planarNode, forKey: key)
-
-        return planarNode
-    }
-
     /// Updates the scene with the given time interval.
     ///
     /// - Parameter currentTime: The current time of the scene.
