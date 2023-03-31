@@ -121,7 +121,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
         _ key: NodeKey,
         type: Node.Type = Node.self
     ) -> Node? {
-        nodes.get(key)?.as(type: type)
+        guard let node = nodes.get(key)?.as(type: type) else {
+            return childNode(key)?.as(type: type)
+        }
+
+        return node
     }
 
     /// Retrieves a PlanarNode from the scene with a given key.
@@ -132,7 +136,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func get(
         _ key: NodeKey
     ) -> PlanarNode? {
-        nodes.get(key)
+        guard let node = nodes.get(key) else {
+            return childNode(key)
+        }
+
+        return node
     }
 
     /// Retrieves a PlanarNode from the scene with a given key.
@@ -143,10 +151,6 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func childNode(
         _ key: NodeKey
     ) -> PlanarNode? {
-        if let node = get(key) {
-            return node
-        }
-
         guard let node = children.first(where: { $0.name == "\(key)" }) else {
             return nil
         }
@@ -170,7 +174,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
         _ key: NodeKey,
         type: Node.Type = Node.self
     ) throws -> Node {
-        try nodes.resolve(key).resolve(type: type)
+        guard let node = get(key, type: type) else {
+            return try nodes.resolve(key).resolve(type: type)
+        }
+
+        return node
     }
 
     /// Resolves a PlanarNode from the scene with a given key.
@@ -183,7 +191,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func resolve(
         _ key: NodeKey
     ) throws -> PlanarNode {
-        try nodes.resolve(key)
+        guard let node = get(key) else {
+            return try nodes.resolve(key)
+        }
+
+        return node
     }
 
     /// Updates the scene with the given time interval.
