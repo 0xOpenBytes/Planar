@@ -30,7 +30,12 @@ public class PlanarNode: SKNode, Pluginable {
 
         super.init()
 
-        addChild(node)
+        if let parent = node.parent {
+            node.move(toParent: self)
+            parent.addChild(self)
+        } else {
+            addChild(node)
+        }
     }
 
     /// Required initializer that is not implemented.

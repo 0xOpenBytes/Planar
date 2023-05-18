@@ -93,6 +93,8 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func add(node: PlanarNode, forKey key: NodeKey) {
         nodes.set(value: node, forKey: key)
 
+        node.name = "\(key)"
+
         addChild(node)
     }
 
@@ -118,7 +120,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
         _ key: NodeKey,
         type: Node.Type = Node.self
     ) -> Node? {
-        nodes.get(key)?.as(type: type)
+        guard let node = nodes.get(key)?.as(type: type) else {
+            return childNode(key)?.as(type: type)
+        }
+
+        return node
     }
 
     /// Retrieves a PlanarNode from the scene with a given key.
@@ -129,7 +135,29 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func get(
         _ key: NodeKey
     ) -> PlanarNode? {
-        nodes.get(key)
+        guard let node = nodes.get(key) else {
+            return childNode(key)
+        }
+
+        return node
+    }
+
+    /// Retrieves a PlanarNode from the scene with a given key.
+    ///
+    /// - Parameter key: The key associated with the node.
+    ///
+    /// - Returns: The PlanarNode with the given key.
+    open func childNode(
+        _ key: NodeKey
+    ) -> PlanarNode? {
+        guard let node = children.first(where: { $0.name == "\(key)" }) else {
+            return nil
+        }
+
+        let planarNode = PlanarNode(node: node)
+        nodes.set(value: planarNode, forKey: key)
+
+        return planarNode
     }
 
     /// Resolves a PlanarNode from the scene with a given key.
@@ -145,7 +173,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
         _ key: NodeKey,
         type: Node.Type = Node.self
     ) throws -> Node {
-        try nodes.resolve(key).resolve(type: type)
+        guard let node = get(key, type: type) else {
+            return try nodes.resolve(key).resolve(type: type)
+        }
+
+        return node
     }
 
     /// Resolves a PlanarNode from the scene with a given key.
@@ -158,7 +190,11 @@ open class PlanarScene<NodeKey: Hashable>: SKScene, Pluginable {
     open func resolve(
         _ key: NodeKey
     ) throws -> PlanarNode {
-        try nodes.resolve(key)
+        guard let node = get(key) else {
+            return try nodes.resolve(key)
+        }
+
+        return node
     }
 
     /// Updates the scene with the given time interval.
