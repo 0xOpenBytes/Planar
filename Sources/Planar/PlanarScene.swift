@@ -1,4 +1,3 @@
-import c
 import Cache
 import Plugin
 import Scribe
